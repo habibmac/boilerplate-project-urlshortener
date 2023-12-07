@@ -54,7 +54,7 @@ app.post("/api/shorturl", urlencodedParser, async (req, res) => {
   // check if url is valid
   const isValidUrl = validUrl.isUri(url);
   if (!isValidUrl) {
-    return res.status(401).json({ error: "invalid url" });
+    return res.json({ error: "invalid url" });
   }
 
   // check if url already exists in db
