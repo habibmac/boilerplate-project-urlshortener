@@ -1,0 +1,6 @@
+{
+    "routes": [
+        { "src": "/short_url", "dest": "/index.js" },
+        { "src": "/short_url/:short_url", "dest": "/index.js" }
+    ]
+}
