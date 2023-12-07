@@ -18,7 +18,7 @@
     ], 
     "headers": [
         {
-            "source": "/shorturl",
+            "source": "/api/shorturl",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
@@ -39,7 +39,7 @@
             ]
         },
         {
-            "source": "/shorturl/(.*)",
+            "source": "/api/shorturl/(.*)",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
