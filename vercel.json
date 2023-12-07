@@ -6,14 +6,14 @@
             "use": "@vercel/node"
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/api/shorturl",
-            "dest": "index.js"
+            "source": "/api/shorturl",
+            "destination": "index.js"
         },
         {
-            "src": "/api/shorturl/:shortUrl",
-            "dest": "index.js"
+            "source": "/api/shorturl/:shortUrl",
+            "destination": "index.js"
         }
     ], 
     "headers": [
