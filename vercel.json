@@ -9,11 +9,11 @@
     "routes": [
         {
             "src": "/api/shorturl",
-            "dest": "/index.js"
+            "dest": "index.js"
         },
         {
             "src": "/api/shorturl/:shortUrl",
-            "dest": "/index.js"
+            "dest": "index.js"
         }
     ]
 }
