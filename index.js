@@ -25,7 +25,7 @@ app.get('/api/hello', function(req, res) {
   res.json({ greeting: 'hello API' });
 });
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI);
 
 app.get("/api/shorturl/:shortUrl", async (req, res) => {
   // get shortUrl from request params
