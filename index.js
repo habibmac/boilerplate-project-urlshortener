@@ -61,7 +61,7 @@ app.post("/api/shorturl", urlencodedParser, async (req, res) => {
 
   // Check if the protocol is http or https
   if (urlObject.protocol !== 'http:' && urlObject.protocol !== 'https:') {
-    return res.status(400).json({ error: "Invalid http:// or https://" });
+    return res.status(400).json({ error: "invalid url" });
   }
 
   try {
