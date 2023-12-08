@@ -56,12 +56,12 @@ app.post("/api/shorturl", urlencodedParser, async (req, res) => {
   try {
     urlObject = new URL(url);
   } catch (err) {
-    return res.status(400).json({ error: "invalid url" });
+    return res.json({ error: "invalid url" });
   }
 
   // Check if the protocol is http or https
   if (urlObject.protocol !== 'http:' && urlObject.protocol !== 'https:') {
-    return res.status(400).json({ error: "invalid url" });
+    return res.json({ error: "invalid url" });
   }
 
   try {
@@ -75,7 +75,7 @@ app.post("/api/shorturl", urlencodedParser, async (req, res) => {
       });
     });
   } catch (err) {
-    return res.status(400).json({ error: err });
+    return res.json({ error: err });
   }
 
 
