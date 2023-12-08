@@ -2,9 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const { nanoid } = require("nanoid");
-const validUrl = require("valid-url");
+const { customAlphabet } = require("nanoid");
 const bodyParser = require("body-parser");
+const dns = require("dns");
 
 const Item = require("./models/item");
 const app = express();
@@ -31,13 +31,13 @@ app.get("/api/shorturl/:shortUrl", async (req, res) => {
   // get shortUrl from request params
   const shortUrl = req.params.shortUrl;
   if (!shortUrl) {
-    return res.status(404).json("No item found");
+    return res.status(404).json({error: "No item found"});
   }
 
   // find item in db
   const item = await Item.findOne({ short_url: shortUrl });
   if (!item) {
-    return res.status(404).json("No item found");
+    return res.status(404).json({error: "No item found"});
   }
 
   // redirect to original url
@@ -51,11 +51,33 @@ app.post("/api/shorturl", urlencodedParser, async (req, res) => {
   // get url from request body
   const url = req.body.url;
 
-  // check if url is valid
-  const isValidUrl = validUrl.isUri(url);
-  if (!isValidUrl) {
-    return res.json({ error: "invalid url" });
+  // validate url format
+  let urlObject;
+  try {
+    urlObject = new URL(url);
+  } catch (err) {
+    return res.status(400).json({ error: "invalid url" });
   }
+
+  // Check if the protocol is http or https
+  if (urlObject.protocol !== 'http:' && urlObject.protocol !== 'https:') {
+    return res.status(400).json({ error: "Invalid http:// or https://" });
+  }
+
+  try {
+    await new Promise((resolve, reject) => {
+      dns.lookup(urlObject.hostname, (err) => {
+        if (err) {
+          reject("invalid url");
+        } else {
+          resolve();
+        }
+      });
+    });
+  } catch (err) {
+    return res.status(400).json({ error: err });
+  }
+
 
   // check if url already exists in db
   const existingItem = await Item.findOne({ original_url: url });
@@ -64,8 +86,9 @@ app.post("/api/shorturl", urlencodedParser, async (req, res) => {
   }
 
   // generate url code
-  const urlCode = nanoid(5);
-  const shortUrl = urlCode;
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const nanoid = customAlphabet(alphabet, 5);
+  const shortUrl = nanoid();
 
   // create item
   const item = new Item({
