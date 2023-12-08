@@ -15,6 +15,6 @@ const itemSchema = new mongoose.Schema({
     },
 });
 
-const Item = mongoose.model("Item", itemSchema);
+const Item = mongoose.model("Item", itemSchema, 'url-shortener');
 
 module.exports = Item;
